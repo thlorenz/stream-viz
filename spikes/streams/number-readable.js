@@ -1,7 +1,7 @@
 'use strict';
 
 var util = require('util')
-  , stream = require('readable-stream')
+  , stream = require('stream')
   , Readable = stream.Readable
 
 module.exports = NumberReadable;
