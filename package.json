@@ -4,7 +4,9 @@
   "description": "Visualizes streams in the browser.",
   "main": "streams-viz.js",
   "scripts": {
-    "start": "(cd spikes/gauge && beefy main.js 3000 --live)"
+    "start": "(cd example/gauge && beefy main.js 3000 --live)",
+    "gauge": "(cd example/gauge && beefy main.js 3000 --live)",
+    "table": "(cd example/table && beefy main.js 3000 --live)"
   },
   "repository": {
     "type": "git",
@@ -12,7 +14,8 @@
   },
   "homepage": "https://github.com/thlorenz/streams-viz",
   "dependencies": {
-    "d3-gauge-writable": "~0.1.1"
+    "d3-gauge-writable": "~0.1.1",
+    "tabject": "~0.2.1"
   },
   "devDependencies": {
     "beefy": "~0.4.4",
