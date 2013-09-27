@@ -1,12 +1,9 @@
 'use strict';
 
 var numbers = require('../streams/number-readable')
-  , d3gauge = require('d3-gauge')
-  ;
+  , sviz = require('../../')
+  , el = document.getElementById('numbers')
 
-var gauge = d3gauge(document.body, { max: 500, clazz: 'simple', label: 'numbers' });
-gauge.on = function () {};
-gauge.once = function () {};
-gauge.emit = function () {};
-gauge._events = {};
-numbers({ to: 500, throttle: 200 }).pipe(gauge);
+var nums = numbers({ to: 500, throttle: 200 });
+nums
+  .pipe(sviz('gauge', el, { label: 'r-buffer', max: 500, clazz: 'simple' }))
