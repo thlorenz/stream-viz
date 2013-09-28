@@ -6,8 +6,8 @@ var numbers  =  require('../streams/number-readable')
   , through  =  require('through2')
   , el       =  document.getElementById('numbers')
 
-var nums       =  numbers({ to: 500, throttle: 200 });
-var numsState  =  nebraska(nums, { interval: 400 })
+var nums       =  numbers({ to: 500, throttle: 2000 });
+var numsState  =  nebraska(nums, { interval: 400, readable: nebraska.properties.readable })
 var numsReadableState =  numsState.pipe(through({ objectMode: true }, pluckReadable))
 
 function pluckReadable (chunk, encoding, cb) {
@@ -15,4 +15,10 @@ function pluckReadable (chunk, encoding, cb) {
   cb()
 }
 
-numsReadableState.pipe(sviz('table', el, { label: 'rstate', max: 16, clazz: 'simple' }, true))
+numsReadableState.pipe(sviz('table', el))
+
+setTimeout(pipenums, 2000);
+
+function pipenums () {
+  nums.pipe(through());
+}

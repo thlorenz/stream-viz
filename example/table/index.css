@@ -1,0 +1,26 @@
+.tabject {
+  background: #111;
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 20px;
+  color: #0D660D;
+  font-size: 18px;
+  font-family: monospace;
+  line-height: 24px;
+}
+
+.tabject-key {
+  color: #089608;  
+}
+
+.tabject-value.boolean {
+  color: #FC8E8E;
+}
+
+.tabject-value.number {
+  color: lightblue;
+}
+
+.tabject-value.object {
+  color: #777;
+}

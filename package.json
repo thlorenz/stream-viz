@@ -15,7 +15,8 @@
   "homepage": "https://github.com/thlorenz/streams-viz",
   "dependencies": {
     "d3-gauge-writable": "~0.1.1",
-    "tabject": "~0.2.1"
+    "tabject": "~0.2.1",
+    "xtend": "~2.1.1"
   },
   "devDependencies": {
     "beefy": "~0.4.4",
