@@ -6,7 +6,8 @@
   "scripts": {
     "start": "(cd example/gauge && beefy main.js 3000 --live)",
     "gauge": "(cd example/gauge && beefy main.js 3000 --live)",
-    "table": "(cd example/table && beefy main.js 3000 --live)"
+    "table": "(cd example/table && beefy main.js 3000 --live)",
+    "ticker": "(cd example/ticker && beefy main.js 3000 --live)"
   },
   "repository": {
     "type": "git",
