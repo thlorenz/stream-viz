@@ -19,7 +19,8 @@
     "tabject": "~0.2.1",
     "xtend": "~2.1.1",
     "chunk-rate-readable": "~0.1.1",
-    "nvd3": "git://github.com/thlorenz/nvd3"
+    "nvd3": "git://github.com/thlorenz/nvd3",
+    "smoothie": "~1.17.0"
   },
   "devDependencies": {
     "beefy": "~0.4.4",
