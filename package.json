@@ -19,12 +19,12 @@
     "tabject": "~0.2.1",
     "xtend": "~2.1.1",
     "chunk-rate-readable": "~0.1.1",
-    "nvd3": "git://github.com/thlorenz/nvd3",
     "smoothie": "~1.17.0"
   },
   "devDependencies": {
     "beefy": "~0.4.4",
     "nebraska": "~0.1.0",
+    "nvd3": "git://github.com/thlorenz/nvd3",
     "through2": "~0.2.3"
   },
   "keywords": [],
