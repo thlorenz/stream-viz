@@ -17,7 +17,9 @@
   "dependencies": {
     "d3-gauge-writable": "~0.1.1",
     "tabject": "~0.2.1",
-    "xtend": "~2.1.1"
+    "xtend": "~2.1.1",
+    "chunk-rate-readable": "~0.1.1",
+    "nvd3": "git://github.com/thlorenz/nvd3"
   },
   "devDependencies": {
     "beefy": "~0.4.4",
