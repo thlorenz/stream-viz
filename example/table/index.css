@@ -2,11 +2,17 @@
   background: #111;
   border: 1px solid black;
   border-radius: 15px;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   color: #0D660D;
   font-size: 18px;
   font-family: monospace;
   line-height: 24px;
+}
+
+.tabject h2 {
+  color: white;
+  font-size: 24px;
+  text-align: center;
 }
 
 .tabject-key {
