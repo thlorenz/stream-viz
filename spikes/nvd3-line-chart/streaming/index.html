@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<link href="nv.d3.css" rel="stylesheet" type="text/css">
+<link href="teststyle.css" rel="stylesheet" type='text/css'>
+
+<body>
+  <h3>Example showing real time chart updating</h3>
+  The chart below is a historical bar chart, which is ideal for visualizing time series data.<br/>
+  First, you need to update the data model for the chart. In the example, we append a random number
+  every half a second. Then, you call <strong>chart.update()</strong>.
+
+  <div id='chart' class='chart half with-transitions'>
+    <svg></svg>
+    <button id='start-stop-button'>Start/Stop Stream</button>
+  </div>
+
+  <script type="text/javascript" src="main.js"></script>
+</body>
+</html>
