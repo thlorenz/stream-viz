@@ -52,6 +52,8 @@ var writableProps = [
   , 'writelen'
 ]
 
+var objectMode = true;
+
 function vizOverview (rootEl, stream) {
   var rootRow1      =  rootEl.getElementsByClassName('row1')[0]
     , rootRow2      =  rootEl.getElementsByClassName('row2')[0]
@@ -78,7 +80,7 @@ function vizOverview (rootEl, stream) {
 
   if (readableState) {
     stream
-      .pipe(sviz.ticker(rootRow1, {}, false))
+      .pipe(sviz.ticker(rootRow1, {objectMode: objectMode }, false))
 
     streamRate
       .pipe(sviz.lineChart(rootRow1))
@@ -92,9 +94,10 @@ function vizOverview (rootEl, stream) {
       .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Readable State' } }))
   }
 }
-var nums = numbers({ objectMode: false, to: 5000, throttle: 200, highWaterMark: 20 });
-var powers = powers({ objectMode: false,  throttle: 1000, highWaterMark: 20 });
-var pit = tarpit({ objectMode: false, throttle: 2000, highWaterMark: 40 });
+
+var nums   =  numbers({ objectMode: objectMode, throttle: 200,  highWaterMark: 20 , to: 5000})
+  , powers =  powers( { objectMode: objectMode, throttle: 1000, highWaterMark: 20 })
+  , pit    =  tarpit( { objectMode: objectMode, throttle: 2000, highWaterMark: 40 })
 
 
 vizOverview(numsEl, nums)
