@@ -1,0 +1,9 @@
+.ticker {
+  background: #111;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: #ddd;
+  font-size: 24px;
+  font-family: monospace;
+  padding: 7px;
+}
