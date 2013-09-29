@@ -1,0 +1,63 @@
+@import 'gauge.css';
+@import 'line-chart.css';
+@import 'ticker.css';
+@import 'tabject.css';
+
+h3 {
+  text-align: center;
+  text-decoration: underline;
+}
+
+#wrapper {
+  width: 1440px;
+  position: relative;
+  margin: 20px;
+  padding: 20px;
+}
+
+#numbers {
+  position: absolute;
+  width: 30%;
+}
+
+#powers {
+  position: absolute;
+  left: 34%;
+  width: 30%;
+}
+
+#powers,
+#numbers {
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.ticker {
+  margin: 10px;
+}
+
+.row1 .ticker {
+  float: right;
+}
+
+.row1 {
+  width: 100%;
+}
+
+.row1 * {
+  float: left;
+}
+
+/* clear fix: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.row1,
+.row2:before,
+.row1,
+.row2:after {
+    content:"";
+    display:table;
+}
+.row1,
+.row2:after {
+    clear:both;
+}
