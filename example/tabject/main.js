@@ -15,7 +15,7 @@ function pluckReadable (chunk, encoding, cb) {
   cb()
 }
 
-numsReadableState.pipe(sviz('table', el, { tabject: { label: 'Readable State' } }));
+numsReadableState.pipe(sviz.tabject(el, { tabject: { label: 'Readable State' } }));
 
 setTimeout(pipenums, 2000);
 

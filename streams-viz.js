@@ -5,17 +5,18 @@ var d3gauge = require('d3-gauge-writable')
   , ticker = require('./lib/ticker-writable')
   , lineChart = require('./lib/line-chart-writable')
 
-var go = module.exports = function (viztype, el, opts, objectMode) {
-  switch (viztype) {
-    case 'gauge': 
-      return d3gauge(el, { gauge: opts, objectMode: objectMode });
-    case 'table': 
-      return tabject(el, opts, true);
-    case 'ticker': 
-      return ticker(el, opts, objectMode);
-    case 'line-chart':
-      return lineChart(el, opts, true);
-    default: 
-      throw new Error('Unkown viztype: ' + viztype);
-  }
-};
+exports.gauge = function(el, opts, objectMode) {
+  return d3gauge(el, { gauge: opts, objectMode: objectMode });
+}
+
+exports.tabject = function (el, opts) {
+  return tabject(el, opts, true);
+}
+
+exports.ticker = function(el, opts, objectMode) {
+  return ticker(el, opts, objectMode);
+}
+
+exports.lineChart = function (el, opts) {
+  return lineChart(el, opts, true);
+}

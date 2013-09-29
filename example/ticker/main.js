@@ -7,4 +7,4 @@ var numbers  =  require('../streams/number-readable')
   , el       =  document.getElementById('numbers')
 
 var nums = numbers({ to: 500, throttle: 2000 });
-nums.pipe(sviz('ticker', el));
+nums.pipe(sviz.ticker(el));
