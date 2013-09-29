@@ -1,20 +1,16 @@
 'use strict';
 
-var numbers    =  require('../streams/number-readable')
-  , sviz       =  require('../../')
-  , nebraska   =  require('nebraska')
-  , chunkRate  =  require('chunk-rate-readable')
-  , through    =  require('through2')
+var numbers   =  require('../streams/number-readable')
+  , powers    =  require('../streams/power-transform')
+  , tarpit    =  require('../streams/tarpit-writable')
+  , sviz      =  require('../../')
+  , nebraska  =  require('nebraska')
+  , chunkRate =  require('chunk-rate-readable')
+  , through   =  require('through2')
 
-var numsEl     =  document.getElementById('numbers')
-  , numsRow1   =  numsEl.getElementsByClassName('row1')[0]
-  , numsRow2   =  numsEl.getElementsByClassName('row2')[0]
-  , numsRow3   =  numsEl.getElementsByClassName('row3')[0]
-
-  , powersEl   =  document.getElementById('powers')
-  , powersRow1 =  powersEl.getElementsByClassName('row1')[0]
-  , powersRow2 =  powersEl.getElementsByClassName('row2')[0]
-  , powersRow3 =  powersEl.getElementsByClassName('row3')[0]
+var numsEl   =  document.getElementById('numbers')
+  , powersEl =  document.getElementById('powers')
+  , tarpitEl =  document.getElementById('tarpit')
   
 function pluckReadableBufferLen (chunk, encoding, cb) {
   this.push(chunk.readable.bufferLength);
@@ -32,44 +28,77 @@ function pluckReadable (chunk, encoding, cb) {
 }
 
 function pluckWritable (chunk, encoding, cb) {
-  this.push(chunk.readable);
+  this.push(chunk.writable);
   cb()
 }
 
 var readableProps = [
-      'highWaterMark'
-    , 'length'
-    , 'pipesCount'
-    , 'flowing'
-    , 'ended'
-    , 'endEmitted',
-    , 'reading' 
-    , 'calledRead'
-    , 'objectMode'
-    , 'defaultEncoding'
-];
+    'highWaterMark'
+  , 'bufferLength'
+  , 'pipesCount'
+  , 'flowing'
+  , 'reading' 
+  , 'calledRead'
+  , 'objectMode'
+]
 
-var nums       =  numbers({ to: 5000, throttle: 50 })
-  , numsRate   =  chunkRate(nums)
-  , numsState  =  nebraska(nums, { 
-        interval: 400
-      , readable: readableProps 
-    })
-  , numsReadableState = numsState
-      .pipe(through({ objectMode: true }, pluckReadable))
+var writableProps = [
+    'highWaterMark'
+  , 'bufferLength'
+  , 'objectMode'
+  , 'needDrain'
+  , 'writing'
+  , 'bufferProcessing'
+  , 'writelen'
+]
 
-  , rbufferLen = numsState
+function vizOverview (rootEl, stream) {
+  var rootRow1      =  rootEl.getElementsByClassName('row1')[0]
+    , rootRow2      =  rootEl.getElementsByClassName('row2')[0]
+    , rootRow3      =  rootEl.getElementsByClassName('row3')[0]
+    , readableState =  stream._readableState
+    , writableState =  stream._writableState
+
+  var streamRate   =  chunkRate(stream)
+    , streamState  =  nebraska(stream, { 
+          interval: 400
+        , readable: readableProps 
+        , writable: writableProps 
+      })
+
+  if (writableState) {
+    streamState
+      .pipe(through({ objectMode: true }, pluckWritableBufferLen))
+      .pipe(sviz.gauge(rootRow2, { label: 'writable', max: writableState.highWaterMark, size: 150 }, true))
+
+    streamState
+      .pipe(through({ objectMode: true }, pluckWritable))
+      .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Writable State' } }))
+  }
+
+  if (readableState) {
+    stream
+      .pipe(sviz.ticker(rootRow1, {}, false))
+
+    streamRate
+      .pipe(sviz.lineChart(rootRow1))
+
+    streamState
       .pipe(through({ objectMode: true }, pluckReadableBufferLen))
+      .pipe(sviz.gauge(rootRow2, { label: 'readable', max: readableState.highWaterMark, size: 150 }, true))
 
-nums
-  .pipe(sviz.ticker(numsRow1))
+    streamState
+      .pipe(through({ objectMode: true }, pluckReadable))
+      .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Readable State' } }))
+  }
+}
+var nums = numbers({ objectMode: false, to: 5000, throttle: 200, highWaterMark: 20 });
+var powers = powers({ objectMode: false,  throttle: 1000, highWaterMark: 20 });
+var pit = tarpit({ objectMode: false, throttle: 2000, highWaterMark: 40 });
 
-numsRate
-  .pipe(sviz.lineChart(numsRow1))
 
-rbufferLen
-  .pipe(sviz.gauge(numsRow2, { label: 'readable', max: 16, size: 150 }, true))
+vizOverview(numsEl, nums)
+vizOverview(powersEl, powers)
+vizOverview(tarpitEl, pit)
 
-numsReadableState
-  .pipe(sviz.tabject(numsRow3, { tabject: { label: 'Readable State' } }))
-
+nums.pipe(powers).pipe(pit)

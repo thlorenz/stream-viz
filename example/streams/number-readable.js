@@ -14,18 +14,15 @@ function NumberReadable (opts) {
   this.idx = 0;
   this.to = opts.to;
   this.throttle = opts.throttle;
+  this._opts = opts;
 }
 
 NumberReadable.prototype._read = function () {
-  if (this.idx > this.to) return this.push(null);
-  var push = function () { this.push('' + this.idx++); }.bind(this);
-  setTimeout(push, this.throttle);
-}
+  var self = this;
+  if (self.idx > self.to) return self.push(null);
+  function push () { 
+    self.push(self._opts.objectMode ? self.idx++ : '' + self.idx++); 
+  }
 
-// Test
-if (typeof window === 'undefined' && !module.parent) {
-  var numbers = new NumberReadable({ to: 3 });
-  numbers
-    .on('data', console.log)
-    .on('end', function () { console.error('ended') })
+  setTimeout(push, self.throttle);
 }

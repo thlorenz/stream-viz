@@ -12,13 +12,12 @@ function TarpitWritable (opts) {
   if (!(this instanceof TarpitWritable)) return new TarpitWritable(opts);
   Writable.call(this, opts);
 
-  this.debug = opts.debug;
-  // could be useful to test buffer length output over time
-  this.interval = opts.interval || null;
+  this._debug = opts.debug;
+  this._throttle = opts.throttle || null;
 }
 
 TarpitWritable.prototype._write = function (chunk, encoding, cb) {
-  if (this.debug) console.error('writing ', chunk);
+  if (this._debug) console.error('writing ', chunk);
 
-  setTimeout(cb, this.interval);
+  setTimeout(cb, this._throttle);
 }

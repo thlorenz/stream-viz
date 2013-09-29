@@ -14,7 +14,7 @@ exports.tabject = function (el, opts) {
 }
 
 exports.ticker = function(el, opts, objectMode) {
-  return ticker(el, opts, objectMode);
+  return ticker(el, { ticker: opts, objectMode: objectMode });
 }
 
 exports.lineChart = function (el, opts) {
