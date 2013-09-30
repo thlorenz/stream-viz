@@ -6,32 +6,19 @@ var numbers   =  require('../streams/number-readable')
   , sviz      =  require('../../')
   , nebraska  =  require('nebraska')
   , chunkRate =  require('chunk-rate-readable')
-  , through   =  require('through2')
 
+// transforms
+var pluckWritableBufferLen =  require('../../lib/transforms/pluck-writable-buffer-len-transform')
+  , pluckReadableBufferLen =  require('../../lib/transforms/pluck-readable-buffer-len-transform')
+  , pluckWritableState     =  require('../../lib/transforms/pluck-writable-state-transform')
+  , pluckReadableState     =  require('../../lib/transforms/pluck-readable-state-transform')
+  , logger                 =  require('../../lib/transforms/logger-transform') 
+
+// DOM elements
 var numsEl   =  document.getElementById('numbers')
   , powersEl =  document.getElementById('powers')
   , tarpitEl =  document.getElementById('tarpit')
   
-function pluckReadableBufferLen (chunk, encoding, cb) {
-  this.push(chunk.readable.bufferLength);
-  cb()
-}
-
-function pluckWritableBufferLen (chunk, encoding, cb) {
-  this.push(chunk.writable.bufferLength);
-  cb()
-}
-
-function pluckReadable (chunk, encoding, cb) {
-  this.push(chunk.readable);
-  cb()
-}
-
-function pluckWritable (chunk, encoding, cb) {
-  this.push(chunk.writable);
-  cb()
-}
-
 var readableProps = [
     'highWaterMark'
   , 'bufferLength'
@@ -70,11 +57,11 @@ function vizOverview (rootEl, stream) {
 
   if (writableState) {
     streamState
-      .pipe(through({ objectMode: true }, pluckWritableBufferLen))
+      .pipe(pluckWritableBufferLen())
       .pipe(sviz.gauge(rootRow2, { label: 'writable', max: writableState.highWaterMark, size: 150 }, true))
 
     streamState
-      .pipe(through({ objectMode: true }, pluckWritable))
+      .pipe(pluckWritableState())
       .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Writable State' } }))
   }
 
@@ -86,37 +73,23 @@ function vizOverview (rootEl, stream) {
       .pipe(sviz.lineChart(rootRow1))
 
     streamState
-      .pipe(through({ objectMode: true }, pluckReadableBufferLen))
+      .pipe(pluckReadableBufferLen())
       .pipe(sviz.gauge(rootRow2, { label: 'readable', max: readableState.highWaterMark, size: 150 }, true))
 
     streamState
-      .pipe(through({ objectMode: true }, pluckReadable))
+      .pipe(pluckReadableState())
       .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Readable State' } }))
   }
   return stream;
-}
-
-function log () {
-  function logit (d) {
-    console.log('data', d)
-  }
-
-  // logit does not occur whith through2, but when lower line is used, it works (tarpit is a simple write stream that calls back delayed)
-  // also some other through maps seem to break in object mode
-  return through( { objectMode: objectMode }, logit)
-  //return tarpit( { objectMode: objectMode, throttle: 200, highWaterMark: 40, debug: true }) 
 }
 
 var nums   =  numbers({ objectMode: objectMode, throttle: 200,  highWaterMark: 20 , to: 5000})
   , powers =  powers( { objectMode: objectMode, throttle: 1000, highWaterMark: 20 })
   , pit    =  tarpit( { objectMode: objectMode, throttle: 2000, highWaterMark: 40 })
 
-nums.pipe(log())
-
 vizOverview(numsEl, nums)
 vizOverview(powersEl, powers)
 vizOverview(tarpitEl, pit)
 
 nums.pipe(powers).pipe(pit)
-
 

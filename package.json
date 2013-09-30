@@ -13,13 +13,17 @@
     "type": "git",
     "url": "git://github.com/thlorenz/stream-viz.git"
   },
+  "browser": {
+    "stream": "readable-stream"
+  },
   "homepage": "https://github.com/thlorenz/stream-viz",
   "dependencies": {
     "d3-gauge-writable": "~0.1.1",
     "tabject": "~0.2.1",
     "xtend": "~2.1.1",
     "chunk-rate-readable": "~0.1.1",
-    "smoothie": "~1.17.0"
+    "smoothie": "~1.17.0",
+    "readable-stream": "~1.1.9"
   },
   "devDependencies": {
     "beefy": "~0.4.4",
