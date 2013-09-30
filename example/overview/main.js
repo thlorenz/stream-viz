@@ -79,7 +79,7 @@ function vizOverview (rootEl, stream) {
       .pipe(pluckReadableState())
       .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Readable State' } }))
   }
-  return stream;
+
 }
 
 var nums   =  numbers({ objectMode: objectMode, throttle: 200,  highWaterMark: 20 , to: 5000})
@@ -89,6 +89,28 @@ var nums   =  numbers({ objectMode: objectMode, throttle: 200,  highWaterMark: 2
 vizOverview(numsEl, nums)
 vizOverview(powersEl, powers)
 vizOverview(tarpitEl, pit)
+
+function throttleRange(el, stream) {
+  var range = el.getElementsByClassName('throttle')[0];
+  var rangeValue = el.getElementsByClassName('throttle-value')[0];
+  range.onchange = onvalueChanged;
+  range.min = 0;
+  range.max = 2000;
+  range.step = 100;
+  range.value = stream.throttle;
+  rangeValue.innerHTML = stream.throttle;
+  window.range = range;
+
+  function onvalueChanged (ev) {
+    var range = ev.srcElement;
+    rangeValue.innerHTML = range.value;
+    stream.throttle = range.valueAsNumber;
+  }
+}
+
+throttleRange(numsEl, nums)
+throttleRange(powersEl, powers)
+throttleRange(tarpitEl, pit)
 
 nums.pipe(powers).pipe(pit)
 

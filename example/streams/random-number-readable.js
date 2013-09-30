@@ -16,7 +16,7 @@ function RandomNumberReadable (opts) {
 
   this._min = opts.min || 0;
   this._max = opts.max || 100;
-  this.throttle = opts.throttle;
+  this.throttle = opts.throttle || 0;
 }
 
 RandomNumberReadable.prototype._read = function () {
