@@ -47,7 +47,7 @@ function vizOverview (rootEl, stream) {
     , readableState =  stream._readableState
     , writableState =  stream._writableState
 
-  var streamRate   =  chunkRate(stream)
+  var streamRate   =  chunkRate(stream, { interval: 2000 })
     , streamState  =  nebraska(stream, { 
           interval: 400
         , readable: readableProps 
