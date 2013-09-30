@@ -3,6 +3,7 @@
 var numbers   =  require('../streams/number-readable')
   , powers    =  require('../streams/power-transform')
   , tarpit    =  require('../streams/tarpit-writable')
+  , addThrottleRange = require('./add-throttle-range-input')
   , sviz      =  require('../../')
   , nebraska  =  require('nebraska')
   , chunkRate =  require('chunk-rate-readable')
@@ -90,27 +91,10 @@ vizOverview(numsEl, nums)
 vizOverview(powersEl, powers)
 vizOverview(tarpitEl, pit)
 
-function throttleRange(el, stream) {
-  var range = el.getElementsByClassName('throttle')[0];
-  var rangeValue = el.getElementsByClassName('throttle-value')[0];
-  range.onchange = onvalueChanged;
-  range.min = 0;
-  range.max = 2000;
-  range.step = 100;
-  range.value = stream.throttle;
-  rangeValue.innerHTML = stream.throttle;
-  window.range = range;
 
-  function onvalueChanged (ev) {
-    var range = ev.srcElement;
-    rangeValue.innerHTML = range.value;
-    stream.throttle = range.valueAsNumber;
-  }
-}
-
-throttleRange(numsEl, nums)
-throttleRange(powersEl, powers)
-throttleRange(tarpitEl, pit)
+addThrottleRange(numsEl, nums)
+addThrottleRange(powersEl, powers)
+addThrottleRange(tarpitEl, pit)
 
 nums.pipe(powers).pipe(pit)
 
