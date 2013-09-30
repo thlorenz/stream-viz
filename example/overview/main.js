@@ -25,7 +25,6 @@ var readableProps = [
   , 'pipesCount'
   , 'flowing'
   , 'reading' 
-  , 'calledRead'
   , 'objectMode'
 ]
 
