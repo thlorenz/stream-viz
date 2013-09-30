@@ -1,5 +1,4 @@
 @import 'gauge.css';
-@import 'line-chart.css';
 @import 'ticker.css';
 @import 'tabject.css';
 
@@ -9,7 +8,7 @@ h3 {
 }
 
 #wrapper {
-  width: 1600px;
+  width: 1400px;
   position: relative;
   margin: 20px;
   padding: 20px;
@@ -22,13 +21,13 @@ h3 {
 
 #powers {
   position: absolute;
-  left: 34%;
-  width: 30%;
+  left: 33%;
+  width: 33%;
 }
 
 #tarpit {
   position: absolute;
-  left: 68%;
+  left: 67.6%;
   width: 30%;
 }
 

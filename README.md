@@ -2,6 +2,9 @@
 
 Visualizes a stream in the browser.
 
+[Play with it live](http://thlorenz.github.io/stream-viz/).
+
+
 ```js
 // TODO
 ```

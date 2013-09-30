@@ -13,11 +13,11 @@ function TarpitWritable (opts) {
   Writable.call(this, opts);
 
   this._debug = opts.debug;
-  this._throttle = opts.throttle || null;
+  this.throttle = opts.throttle || 0;
 }
 
 TarpitWritable.prototype._write = function (chunk, encoding, cb) {
   if (this._debug) console.error('writing ', chunk);
 
-  setTimeout(cb, this._throttle);
+  setTimeout(cb, this.throttle);
 }

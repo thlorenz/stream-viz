@@ -14,7 +14,7 @@ function PowerTransform (opts) {
 
   opts = opts || {};
   Transform.call(this, opts);
-  this._throttle = opts.throttle;
+  this.throttle = opts.throttle || 0;
   this._opts = opts;
 }
 
@@ -28,5 +28,5 @@ PowerTransform.prototype._transform = function (chunk, encoding, cb) {
     self.push(objectMode ? pow : '' + pow)
     cb();
   }
-  return this._throttle ? setTimeout(respond, this._throttle) : respond();
+  return this.throttle ? setTimeout(respond, this.throttle) : respond();
 }

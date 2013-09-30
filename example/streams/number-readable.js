@@ -13,7 +13,7 @@ function NumberReadable (opts) {
   Readable.call(this, opts);
   this.idx = 0;
   this.to = opts.to;
-  this.throttle = opts.throttle;
+  this.throttle = opts.throttle || 0;
   this._opts = opts;
 }
 
