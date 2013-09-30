@@ -1,6 +1,6 @@
 'use strict';
 
-var xtend     =  require('xtend')
+var xtend = require('xtend')
 
 // readables
 var nebraska  =  require('nebraska')
@@ -39,6 +39,12 @@ var defaultWritableProps = [
   , 'writelen'
 ]
 
+var defaultTicker = {
+    element: document.body
+  , clazz: 'ticker'
+}
+
+// may also contain options specific to the rendered line chart that depicts the rate over time 
 var defaultRate = {
     interval :  2000
   , element  :  document.body
@@ -77,15 +83,15 @@ function StreamViz (stream, opts) {
   this.streamWritableState =  stream._writableState
 
   // options
-  opts = opts || {};
+  opts               =  opts || {};
   this.stateInterval =  opts.stateInterval || 400;
   this.rate          =  xtend(defaultRate, opts.rate);
+  this.ticker        =  xtend(defaultTicker, opts.ticker);
   this.writableGauge =  xtend(defaultWritableGauge, opts.writableGauge);
   this.readableGauge =  xtend(defaultReadableGauge, opts.readableGauge);
   this.writableState =  xtend(defaultWritableState, opts.writableState);
   this.readableState =  xtend(defaultReadableState, opts.readableState);
 
-  this._initChunkRateStream();
   this._initStreamStateStream();
 
   if (this.streamWritableState) {
@@ -94,19 +100,14 @@ function StreamViz (stream, opts) {
   }
 
   if (this.streamReadableState) {
+    this._initTicker();
+    this._initChunkRateStream();
     this._initReadableBufferLenGauge();
     this._initReadableStateTabject();
   }
 }
 
-proto._initChunkRateStream = function () {
-  this.chunkRateStream = chunkRate(
-      this.stream
-    , { interval: this.rate.interval 
-  })
-  this.chunkRateStream.pipe(lineChart(this.rate.element));
-}
-
+// stream state
 proto._initStreamStateStream = function () {
   this.streamStateStream = nebraska(this.stream, { 
       interval: this.stateInterval
@@ -115,6 +116,7 @@ proto._initStreamStateStream = function () {
   })
 }
 
+// Writable only
 proto._initWritableBufferLenGauge = function () {
   this.writableBufferLenStream = this.streamStateStream.pipe(pluckWritableBufferLen())
   this.writableBufferLenStream
@@ -134,6 +136,24 @@ proto._initWritableStateTabject = function () {
     .pipe(tabject(
         this.writableState.element
       , { tabject: { label: this.writableState.label } }
+    ))
+}
+
+// Readable only
+proto._initChunkRateStream = function () {
+  this.chunkRateStream = chunkRate(
+      this.stream
+    , { interval: this.rate.interval 
+  })
+  this.chunkRateStream.pipe(lineChart(this.rate.element));
+}
+
+proto._initTicker = function () {
+  this.stream
+    .pipe(ticker(
+        this.ticker.element
+      , this.ticker
+      , this.streamReadableState.objectMode
     ))
 }
 
