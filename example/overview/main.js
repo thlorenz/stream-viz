@@ -52,7 +52,7 @@ var writableProps = [
   , 'writelen'
 ]
 
-var objectMode = true;
+var objectMode = true
 
 function vizOverview (rootEl, stream) {
   var rootRow1      =  rootEl.getElementsByClassName('row1')[0]
@@ -80,7 +80,7 @@ function vizOverview (rootEl, stream) {
 
   if (readableState) {
     stream
-      .pipe(sviz.ticker(rootRow1, {objectMode: objectMode }, false))
+      .pipe(sviz.ticker(rootRow1, objectMode))
 
     streamRate
       .pipe(sviz.lineChart(rootRow1))
@@ -93,15 +93,30 @@ function vizOverview (rootEl, stream) {
       .pipe(through({ objectMode: true }, pluckReadable))
       .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Readable State' } }))
   }
+  return stream;
+}
+
+function log () {
+  function logit (d) {
+    console.log('data', d)
+  }
+
+  // logit does not occur whith through2, but when lower line is used, it works (tarpit is a simple write stream that calls back delayed)
+  // also some other through maps seem to break in object mode
+  return through( { objectMode: objectMode }, logit)
+  //return tarpit( { objectMode: objectMode, throttle: 200, highWaterMark: 40, debug: true }) 
 }
 
 var nums   =  numbers({ objectMode: objectMode, throttle: 200,  highWaterMark: 20 , to: 5000})
   , powers =  powers( { objectMode: objectMode, throttle: 1000, highWaterMark: 20 })
   , pit    =  tarpit( { objectMode: objectMode, throttle: 2000, highWaterMark: 40 })
 
+nums.pipe(log())
 
 vizOverview(numsEl, nums)
 vizOverview(powersEl, powers)
 vizOverview(tarpitEl, pit)
 
 nums.pipe(powers).pipe(pit)
+
+
