@@ -1,6 +1,6 @@
-# streams-viz
+# stream-viz
 
-Visualizes streams in the browser.
+Visualizes a stream in the browser.
 
 ```js
 // TODO

@@ -1,8 +1,8 @@
 {
-  "name": "streams-viz",
+  "name": "stream-viz",
   "version": "0.0.0",
-  "description": "Visualizes streams in the browser.",
-  "main": "streams-viz.js",
+  "description": "Visualizes a stream in the browser.",
+  "main": "stream-viz.js",
   "scripts": {
     "start": "(cd example/gauge && beefy main.js 3000 --live)",
     "gauge": "(cd example/gauge && beefy main.js 3000 --live)",
@@ -11,9 +11,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/thlorenz/streams-viz.git"
+    "url": "git://github.com/thlorenz/stream-viz.git"
   },
-  "homepage": "https://github.com/thlorenz/streams-viz",
+  "homepage": "https://github.com/thlorenz/stream-viz",
   "dependencies": {
     "d3-gauge-writable": "~0.1.1",
     "tabject": "~0.2.1",
@@ -34,7 +34,7 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/thlorenz/streams-viz/blob/master/LICENSE"
+    "url": "https://github.com/thlorenz/stream-viz/blob/master/LICENSE"
   },
   "engine": {
     "node": ">=0.6"
