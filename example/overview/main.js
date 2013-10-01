@@ -1,116 +1,68 @@
 'use strict';
 
-var numbers   =  require('../streams/number-readable')
-  , powers    =  require('../streams/power-transform')
-  , tarpit    =  require('../streams/tarpit-writable')
-  , sviz      =  require('../../')
-  , nebraska  =  require('nebraska')
-  , chunkRate =  require('chunk-rate-readable')
-
-// transforms
-var pluckWritableBufferLen =  require('../../lib/transforms/pluck-writable-buffer-len-transform')
-  , pluckReadableBufferLen =  require('../../lib/transforms/pluck-readable-buffer-len-transform')
-  , pluckWritableState     =  require('../../lib/transforms/pluck-writable-state-transform')
-  , pluckReadableState     =  require('../../lib/transforms/pluck-readable-state-transform')
-  , logger                 =  require('../../lib/transforms/logger-transform') 
+var numbers          =  require('../streams/number-readable')
+  , powers           =  require('../streams/power-transform')
+  , tarpit           =  require('../streams/tarpit-writable')
+  , sviz             =  require('../../')
+  , addThrottleRange =  require('./add-throttle-range-input')
+  , xtend            =  require('xtend')
+  , query            =  require('./query')
+  , updateLocation   =  require('./update-location')
+  
+var defaultThrottles = { nums: 200, powers: 1000, tarpit: 2000 }
+  , throttles = xtend(defaultThrottles, query.parse())
 
 // DOM elements
 var numsEl   =  document.getElementById('numbers')
   , powersEl =  document.getElementById('powers')
   , tarpitEl =  document.getElementById('tarpit')
+  , linkEl   =  document.getElementById('link-throttles')
   
-var readableProps = [
-    'highWaterMark'
-  , 'bufferLength'
-  , 'pipesCount'
-  , 'flowing'
-  , 'reading' 
-  , 'objectMode'
-]
+linkEl.onclick = updateLocation.bind(null, throttles);
 
-var writableProps = [
-    'highWaterMark'
-  , 'bufferLength'
-  , 'objectMode'
-  , 'needDrain'
-  , 'writing'
-  , 'bufferProcessing'
-  , 'writelen'
-]
+// this also works in non-object mode, but then the highWaterMark is related to actual
+// length of emitted data instead of 1/object and thus it is harder to reason about
+// what's going on
+var objectMode = true;
+var nums   =  numbers({ objectMode: objectMode, throttle: throttles.nums,  highWaterMark: 20 , to: 5000})
+  , powers =  powers( { objectMode: objectMode, throttle: throttles.powers, highWaterMark: 20 })
+  , pit    =  tarpit( { objectMode: objectMode, throttle: throttles.tarpit, highWaterMark: 40 })
 
-var objectMode = true
+function getRows (rootEl) {
+  var row1 =  rootEl.getElementsByClassName('row1')[0]
+    , row2 =  rootEl.getElementsByClassName('row2')[0]
+    , row3 =  rootEl.getElementsByClassName('row3')[0]
 
-function vizOverview (rootEl, stream) {
-  var rootRow1      =  rootEl.getElementsByClassName('row1')[0]
-    , rootRow2      =  rootEl.getElementsByClassName('row2')[0]
-    , rootRow3      =  rootEl.getElementsByClassName('row3')[0]
-    , readableState =  stream._readableState
-    , writableState =  stream._writableState
-
-  var streamRate   =  chunkRate(stream, { interval: 2000 })
-    , streamState  =  nebraska(stream, { 
-          interval: 400
-        , readable: readableProps 
-        , writable: writableProps 
-      })
-
-  if (writableState) {
-    streamState
-      .pipe(pluckWritableBufferLen())
-      .pipe(sviz.gauge(rootRow2, { label: 'writable', max: writableState.highWaterMark, size: 150 }, true))
-
-    streamState
-      .pipe(pluckWritableState())
-      .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Writable State' } }))
-  }
-
-  if (readableState) {
-    stream
-      .pipe(sviz.ticker(rootRow1, objectMode))
-
-    streamRate
-      .pipe(sviz.lineChart(rootRow1))
-
-    streamState
-      .pipe(pluckReadableBufferLen())
-      .pipe(sviz.gauge(rootRow2, { label: 'readable', max: readableState.highWaterMark, size: 150 }, true))
-
-    streamState
-      .pipe(pluckReadableState())
-      .pipe(sviz.tabject(rootRow3, { tabject: { label: 'Readable State' } }))
-  }
-
+  return [ null, row1, row2, row3 ];
 }
 
-var nums   =  numbers({ objectMode: objectMode, throttle: 200,  highWaterMark: 20 , to: 5000})
-  , powers =  powers( { objectMode: objectMode, throttle: 1000, highWaterMark: 20 })
-  , pit    =  tarpit( { objectMode: objectMode, throttle: 2000, highWaterMark: 40 })
-
-vizOverview(numsEl, nums)
-vizOverview(powersEl, powers)
-vizOverview(tarpitEl, pit)
-
-function throttleRange(el, stream) {
-  var range = el.getElementsByClassName('throttle')[0];
-  var rangeValue = el.getElementsByClassName('throttle-value')[0];
-  range.onchange = onvalueChanged;
-  range.min = 0;
-  range.max = 2000;
-  range.step = 100;
-  range.value = stream.throttle;
-  rangeValue.innerHTML = stream.throttle;
-  window.range = range;
-
-  function onvalueChanged (ev) {
-    var range = ev.srcElement;
-    rangeValue.innerHTML = range.value;
-    stream.throttle = range.valueAsNumber;
+function getOpts(rows) {
+  return {
+      rate          :  { element :  rows[1] }
+    , ticker        :  { element :  rows[1] }
+    , writableGauge :  { element :  rows[2] }
+    , readableGauge :  { element :  rows[2] }
+    , writableState :  { element :  rows[3] }
+    , readableState :  { element :  rows[3] }
   }
 }
 
-throttleRange(numsEl, nums)
-throttleRange(powersEl, powers)
-throttleRange(tarpitEl, pit)
+// we'll use the default opts, but specify the DOM element to attach the pieces to in order to 
+// get a nicely layed out overview of all of them
+var numsOpts   =  getOpts(getRows(numsEl))
+  , powersOpts =  getOpts(getRows(powersEl))
+  , tarpitOpts =  getOpts(getRows(tarpitEl))
+
+// visualize the separate streams
+// passing no opts at all also works, but we loose the layout
+sviz(nums, numsOpts)
+sviz(powers, powersOpts)
+sviz(pit, tarpitOpts)
+
+// Allow user to configure stream throttle via a range slider
+addThrottleRange(numsEl, nums, throttles, 'nums')
+addThrottleRange(powersEl, powers, throttles, 'powers')
+addThrottleRange(tarpitEl, pit, throttles, 'tarpit')
+
 
 nums.pipe(powers).pipe(pit)
-

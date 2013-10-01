@@ -1,17 +1,17 @@
 .d3-gauge .outer-circle {
-  fill         :  #ccc;
+  fill: #3946A5;
   stroke       :  #000;
   stroke-width :  0.5px;
 }
 
 .d3-gauge .inner-circle {
-  fill         :  #fff;
-  stroke       :  #E0E0E0;
+  fill: rgba(5, 9, 29, 0.83);
+  stroke: #060216;
   stroke-width :  2px;
 }
 
 .d3-gauge .label {
-  fill      :  #333;
+  fill: yellowgreen;
   font-size :  12px;
 }
 
@@ -43,8 +43,13 @@
   fill-opacity :  1;
 }
 
+.d3-gauge .needle-container > circle {
+  fill :  #dc3912;
+  stroke       :  #c63310;
+}
+
 .d3-gauge .current-value {
-  fill         :  #000;
+  fill: #A5A3AF;
   stroke-width :  0px;
 }
 
