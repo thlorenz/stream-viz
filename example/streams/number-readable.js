@@ -11,7 +11,7 @@ util.inherits(NumberReadable, Readable);
 function NumberReadable (opts) {
   if (!(this instanceof NumberReadable)) return new NumberReadable(opts);
   Readable.call(this, opts);
-  this.idx = 0;
+  this.idx = opts.from || 0;
   this.to = opts.to;
   this.throttle = opts.throttle || 0;
   this._opts = opts;
