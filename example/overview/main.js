@@ -5,19 +5,29 @@ var numbers          =  require('../streams/number-readable')
   , tarpit           =  require('../streams/tarpit-writable')
   , sviz             =  require('../../')
   , addThrottleRange =  require('./add-throttle-range-input')
+  , xtend            =  require('xtend')
+  , query            =  require('./query')
+  , updateLocation   =  require('./update-location')
+
+
+var defaultThrottles = { nums: 200, powers: 1000, tarpit: 2000 }
+  , throttles = xtend(defaultThrottles, query.parse())
 
 // DOM elements
 var numsEl   =  document.getElementById('numbers')
   , powersEl =  document.getElementById('powers')
   , tarpitEl =  document.getElementById('tarpit')
+  , linkEl   =  document.getElementById('link-throttles')
   
+linkEl.onclick = updateLocation.bind(null, throttles);
+
 // this also works in non-object mode, but then the highWaterMark is related to actual
 // length of emitted data instead of 1/object and thus it is harder to reason about
 // what's going on
 var objectMode = true;
-var nums   =  numbers({ objectMode: objectMode, throttle: 200,  highWaterMark: 20 , to: 5000})
-  , powers =  powers( { objectMode: objectMode, throttle: 1000, highWaterMark: 20 })
-  , pit    =  tarpit( { objectMode: objectMode, throttle: 2000, highWaterMark: 40 })
+var nums   =  numbers({ objectMode: objectMode, throttle: throttles.nums,  highWaterMark: 20 , to: 5000})
+  , powers =  powers( { objectMode: objectMode, throttle: throttles.powers, highWaterMark: 20 })
+  , pit    =  tarpit( { objectMode: objectMode, throttle: throttles.tarpit, highWaterMark: 40 })
 
 function getRows (rootEl) {
   var row1 =  rootEl.getElementsByClassName('row1')[0]
@@ -51,8 +61,9 @@ sviz(powers, powersOpts)
 sviz(pit, tarpitOpts)
 
 // Allow user to configure stream throttle via a range slider
-addThrottleRange(numsEl, nums)
-addThrottleRange(powersEl, powers)
-addThrottleRange(tarpitEl, pit)
+addThrottleRange(numsEl, nums, throttles, 'nums')
+addThrottleRange(powersEl, powers, throttles, 'powers')
+addThrottleRange(tarpitEl, pit, throttles, 'tarpit')
+
 
 nums.pipe(powers).pipe(pit)
