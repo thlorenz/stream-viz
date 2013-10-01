@@ -4,6 +4,7 @@
 
 body {
   color: yellowgreen;
+  background: url(img/streams-bg.jpg)
 }
 
 h3 {
@@ -11,11 +12,29 @@ h3 {
   text-decoration: underline;
 }
 
+#sidebar,
+#wrapper {
+  float: left;
+}
+
+#sidebar {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: rgba(29, 6, 43, 0.73);
+  margin-top: 0px;
+}
+
+#sidebar a {
+  display: block;
+  color: white;
+  margin: 5px;
+}
+
 #wrapper {
   width: 1400px;
   position: relative;
-  margin: 20px;
-  padding: 20px;
+  padding: 0px;
 }
 
 #numbers {
@@ -25,13 +44,13 @@ h3 {
 
 #powers {
   position: absolute;
-  left: 33%;
+  left: 31.5%;
   width: 33%;
 }
 
 #tarpit {
   position: absolute;
-  left: 67.6%;
+  left: 66%;
   width: 30%;
 }
 
@@ -39,7 +58,7 @@ h3 {
 #numbers,
 #tarpit {
   border: 1px solid black;
-  border-radius: 15px;
+  border-radius: 5px;
   padding: 10px;
   background-color: rgba(29, 6, 43, 0.73);
 }
@@ -75,6 +94,10 @@ h3 {
     clear:both;
 }
 
-input[type=button] {
+input[type=range] {
   margin: 5px;
+}
+
+input[type=button] {
+  margin-top: 25px;
 }

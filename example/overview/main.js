@@ -8,8 +8,7 @@ var numbers          =  require('../streams/number-readable')
   , xtend            =  require('xtend')
   , query            =  require('./query')
   , updateLocation   =  require('./update-location')
-
-
+  
 var defaultThrottles = { nums: 200, powers: 1000, tarpit: 2000 }
   , throttles = xtend(defaultThrottles, query.parse())
 
