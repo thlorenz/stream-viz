@@ -2,6 +2,10 @@
 @import 'ticker.css';
 @import 'tabject.css';
 
+body {
+  color: yellowgreen;
+}
+
 h3 {
   text-align: center;
   text-decoration: underline;
@@ -37,6 +41,7 @@ h3 {
   border: 1px solid black;
   border-radius: 15px;
   padding: 10px;
+  background-color: rgba(29, 6, 43, 0.73);
 }
 
 .ticker {
