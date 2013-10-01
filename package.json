@@ -4,10 +4,8 @@
   "description": "Visualizes a stream in the browser.",
   "main": "stream-viz.js",
   "scripts": {
-    "start": "(cd example/gauge && beefy main.js 3000 --live)",
-    "gauge": "(cd example/gauge && beefy main.js 3000 --live)",
-    "table": "(cd example/table && beefy main.js 3000 --live)",
-    "ticker": "(cd example/ticker && beefy main.js 3000 --live)"
+    "start": "(cd example/overview && beefy main.js 3000 --live)",
+    "line-chart": "(cd example/line-chart && beefy main.js 3000 --live)"
   },
   "repository": {
     "type": "git",
@@ -42,5 +40,21 @@
   },
   "engine": {
     "node": ">=0.6"
+  },
+  "testling": {
+    "files": "test/writables/*.js",
+    "browsers": [
+      "ie/8..latest",
+      "firefox/17..latest",
+      "firefox/nightly",
+      "chrome/22..latest",
+      "chrome/canary",
+      "opera/12..latest",
+      "opera/next",
+      "safari/5.1..latest",
+      "ipad/6.0..latest",
+      "iphone/6.0..latest",
+      "android-browser/4.2..latest"
+    ]
   }
 }
