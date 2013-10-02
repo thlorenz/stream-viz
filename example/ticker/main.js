@@ -1,10 +1,8 @@
 'use strict';
 
-var numbers  =  require('../streams/number-readable')
+var numbers  =  require('stream-spectrum/readable/number')
   , sviz     =  require('../../')
-  , nebraska =  require('nebraska')
-  , through  =  require('through2')
   , el       =  document.getElementById('numbers')
 
-var nums = numbers({ to: 500, throttle: 2000 });
+var nums = numbers({ to: 500, throttle: 200 });
 nums.pipe(sviz.ticker(el));

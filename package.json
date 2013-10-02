@@ -8,6 +8,7 @@
     "start": "(cd example/overview && beefy main.js 3000 --live)",
     "gauge": "(cd example/gauge && beefy main.js 3000 --live)",
     "tabject": "(cd example/tabject && beefy main.js 3000 --live)",
+    "ticker": "(cd example/ticker && beefy main.js 3000 --live)",
     "line-chart": "(cd example/line-chart && beefy main.js 3000 --live)"
   },
   "repository": {

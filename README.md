@@ -27,7 +27,7 @@ After you installed `stream-viz` please do the following:
 
 ## Run smaller examples
 
-`npm run line-chart`
+`npm run line-chart|gauge|tabject|ticker
 
 More coming.
 
