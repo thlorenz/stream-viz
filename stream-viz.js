@@ -3,14 +3,9 @@
 var xtend = require('xtend')
 
 // readables
-var nebraska  =  require('nebraska')
-  , chunkRate =  require('chunk-rate-readable')
-
-// transforms
-var pluckWritableBufferLen =  require('./lib/transforms/pluck-writable-buffer-len-transform')
-  , pluckReadableBufferLen =  require('./lib/transforms/pluck-readable-buffer-len-transform')
-  , pluckWritableState     =  require('./lib/transforms/pluck-writable-state-transform')
-  , pluckReadableState     =  require('./lib/transforms/pluck-readable-state-transform')
+var nebraska        =  require('nebraska')
+  , chunkRate       =  require('chunk-rate-readable')
+  , getStateStreams =  require('./lib/state-streams')
 
 module.exports = exports = StreamViz;
 
@@ -19,25 +14,6 @@ var gauge     =  exports.gauge     =  require('./lib/gauge')
   , lineChart =  exports.lineChart =  require('./lib/line-chart')
   , tabject   =  exports.tabject   =  require('./lib/tabject')
   , ticker    =  exports.ticker    =  require('./lib/ticker')
-
-var defaultReadableProps = [
-    'highWaterMark'
-  , 'bufferLength'
-  , 'pipesCount'
-  , 'flowing'
-  , 'reading' 
-  , 'objectMode'
-]
-
-var defaultWritableProps = [
-    'highWaterMark'
-  , 'bufferLength'
-  , 'objectMode'
-  , 'needDrain'
-  , 'writing'
-  , 'bufferProcessing'
-  , 'writelen'
-]
 
 var defaultTicker = {
     element: document.body
@@ -64,13 +40,13 @@ var defaultReadableGauge = {
 
 var defaultWritableState = {
     label      :  'Writable State'
-  , properties :  defaultWritableProps
+  , properties :  undefined
   , element    :  document.body
 }
 
 var defaultReadableState = {
     label      :  'Readable State'
-  , properties :  defaultReadableProps
+  , properties :  undefined
   , element    :  document.body
 }
 
@@ -84,7 +60,6 @@ function StreamViz (stream, opts) {
 
   // options
   opts               =  opts || {};
-  this.stateInterval =  opts.stateInterval || 400;
   this.rate          =  xtend(defaultRate, opts.rate);
   this.ticker        =  xtend(defaultTicker, opts.ticker);
   this.writableGauge =  xtend(defaultWritableGauge, opts.writableGauge);
@@ -92,7 +67,7 @@ function StreamViz (stream, opts) {
   this.writableState =  xtend(defaultWritableState, opts.writableState);
   this.readableState =  xtend(defaultReadableState, opts.readableState);
 
-  this._initStreamStateStream();
+  this._initStreamStateStreams(opts);
 
   if (this.streamWritableState) {
     this._initWritableBufferLenGauge();
@@ -108,18 +83,19 @@ function StreamViz (stream, opts) {
 }
 
 // stream state
-proto._initStreamStateStream = function () {
-  this.streamStateStream = nebraska(this.stream, { 
-      interval: this.stateInterval
-    , readable: this.readableState.properties 
-    , writable: this.writableState.properties 
-  })
+proto._initStreamStateStreams = function (opts) {
+  this.stateStreams = opts.stateStreams
+    || getStateStreams(
+          this.stream
+        , { stateInterval: opts.stateInterval
+          , readableStateProperties: this.readableState.properties
+          , writableStateProperties: this.writableState.properties
+        })
 }
 
 // Writable only
 proto._initWritableBufferLenGauge = function () {
-  this.writableBufferLenStream = this.streamStateStream.pipe(pluckWritableBufferLen())
-  this.writableBufferLenStream
+  this.stateStreams.writable.bufferLen
     .pipe(gauge(
         this.writableGauge.element
       , { label :  this.writableGauge.label
@@ -130,8 +106,7 @@ proto._initWritableBufferLenGauge = function () {
 }
 
 proto._initWritableStateTabject = function () {
-  this.writableStateStream = this.streamStateStream.pipe(pluckWritableState())
-  this.writableStateStream
+  this.stateStreams.writable.state
     .pipe(tabject(
         this.writableState.element
       , { tabject: { label: this.writableState.label } }
@@ -157,8 +132,7 @@ proto._initTicker = function () {
 }
 
 proto._initReadableBufferLenGauge = function () {
-  this.readableBufferLenStream = this.streamStateStream.pipe(pluckReadableBufferLen())
-  this.readableBufferLenStream
+  this.stateStreams.readable.bufferLen
     .pipe(gauge(
         this.readableGauge.element
       , { label :  this.readableGauge.label
@@ -169,8 +143,7 @@ proto._initReadableBufferLenGauge = function () {
 }
 
 proto._initReadableStateTabject = function () {
-  this.readableStateStream = this.streamStateStream.pipe(pluckReadableState())
-  this.readableStateStream
+  this.stateStreams.readable.state
     .pipe(tabject(
         this.readableState.element
       , { tabject: { label: this.readableState.label } }
