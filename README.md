@@ -1,4 +1,6 @@
-# stream-viz
+# stream-viz 
+
+[![testling badge](https://ci.testling.com/thlorenz/stream-viz.png)](https://ci.testling.com/thlorenz/stream-viz)
 
 Visualizes a stream in the browser.
 
