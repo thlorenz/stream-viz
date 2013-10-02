@@ -1,8 +1,8 @@
 'use strict';
 
-var numbers          =  require('../streams/number-readable')
-  , powers           =  require('../streams/power-transform')
-  , tarpit           =  require('../streams/tarpit-writable')
+var numbers          =  require('stream-spectrum/readable/number')
+  , powers           =  require('stream-spectrum/transform/power')
+  , tarpit           =  require('stream-spectrum/writable/tarpit')
   , sviz             =  require('../../')
   , addThrottleRange =  require('./add-throttle-range-input')
   , xtend            =  require('xtend')

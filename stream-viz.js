@@ -126,7 +126,6 @@ proto._initWritableBufferLenGauge = function () {
         , size  :  this.writableGauge.size
         , max   :  this.streamWritableState.highWaterMark
         }
-      , true
     ))
 }
 
@@ -166,7 +165,6 @@ proto._initReadableBufferLenGauge = function () {
         , size  :  this.readableGauge.size
         , max   :  this.streamReadableState.highWaterMark
         }
-      , true
     ))
 }
 
