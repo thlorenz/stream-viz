@@ -3,8 +3,8 @@
 
 var test = require('tape')
 
-// TODO: make streams package to resuse for tests and examples
-var numbers = require('../../example/streams/number-readable')
+var numbers = require('stream-spectrum/readable/number')
+
 var ticker = require('../../lib/writables/ticker-writable')
 
 test('when upstream is in non-object mode ticks stringified values', function (t) {

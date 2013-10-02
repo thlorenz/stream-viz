@@ -4,6 +4,7 @@
   "description": "Visualizes a stream in the browser.",
   "main": "stream-viz.js",
   "scripts": {
+    "test": "testling -x open",
     "start": "(cd example/overview && beefy main.js 3000 --live)",
     "line-chart": "(cd example/line-chart && beefy main.js 3000 --live)"
   },
@@ -26,7 +27,8 @@
   "devDependencies": {
     "beefy": "~0.4.4",
     "nebraska": "~0.1.0",
-    "through2": "~0.2.3"
+    "through2": "~0.2.3",
+    "stream-spectrum": "~0.1.1"
   },
   "keywords": [],
   "author": {
