@@ -1,6 +1,6 @@
 {
   "name": "stream-viz",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Visualizes a stream in the browser.",
   "main": "stream-viz.js",
   "scripts": {
