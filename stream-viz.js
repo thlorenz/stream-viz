@@ -5,15 +5,16 @@ var xtend = require('xtend')
 // readables
 var nebraska        =  require('nebraska')
   , chunkRate       =  require('chunk-rate-readable')
-  , getStateStreams =  require('./lib/state-streams')
 
 module.exports = exports = StreamViz;
 
-// renderers which are exposed separately for more customized use
-var gauge     =  exports.gauge     =  require('./lib/gauge')
-  , lineChart =  exports.lineChart =  require('./lib/line-chart')
-  , tabject   =  exports.tabject   =  require('./lib/tabject')
-  , ticker    =  exports.ticker    =  require('./lib/ticker')
+// renderers and transforms which are exposed separately for more customized use
+var gauge           =  exports.gauge        =  require('./lib/gauge')
+  , lineChart       =  exports.lineChart    =  require('./lib/line-chart')
+  , tabject         =  exports.tabject      =  require('./lib/tabject')
+  , ticker          =  exports.ticker       =  require('./lib/ticker')
+  // TODO: probably this should be it's own albeit small module
+  , getStateStreams =  exports.stateStreams =  require('./lib/state-streams')
 
 var defaultTicker = {
     element: document.body
