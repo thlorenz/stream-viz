@@ -4,12 +4,17 @@
 
 body {
   color: yellowgreen;
-  background: url(img/streams-bg.jpg)
+  background: url(img/streams-bg.jpg);
+  font-family: Helvetica;
 }
 
 h1, h2, h3 {
   text-align: center;
   text-decoration: underline;
+}
+
+h4 {
+  text-align: center;
 }
 
 #sidebar,
