@@ -6,6 +6,7 @@
   "scripts": {
     "test": "testling -x open",
     "start": "(cd example/overview && beefy main.js 3000 --live)",
+    "gauge": "(cd example/gauge && beefy main.js 3000 --live)",
     "line-chart": "(cd example/line-chart && beefy main.js 3000 --live)"
   },
   "repository": {
