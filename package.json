@@ -25,11 +25,11 @@
     "xtend": "~2.1.1",
     "chunk-rate-readable": "~0.1.1",
     "smoothie": "~1.17.0",
+    "nebraska": "~0.1.0",
     "readable-stream": "~1.1.9"
   },
   "devDependencies": {
     "beefy": "~0.4.4",
-    "nebraska": "~0.1.0",
     "through2": "~0.2.3",
     "stream-spectrum": "~0.1.1"
   },
