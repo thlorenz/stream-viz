@@ -16,39 +16,43 @@ var gauge           =  exports.gauge        =  require('./lib/gauge')
   // TODO: probably this should be it's own albeit small module
   , getStateStreams =  exports.stateStreams =  require('./lib/state-streams')
 
+var body = typeof document !== 'undefined'
+  ? document.body 
+  : 'no document.body server-side';
+
 var defaultTicker = {
-    element: document.body
+    element: body
   , clazz: 'ticker'
 }
 
 // may also contain options specific to the rendered line chart that depicts the rate over time 
 var defaultRate = {
     interval :  2000
-  , element  :  document.body
+  , element  :  body
 }
 
 var defaultWritableGauge = {
     label   :  'writable'
   , size    :  150
-  , element :  document.body
+  , element :  body
 }
 
 var defaultReadableGauge = {
     label   :  'readable'
   , size    :  150
-  , element :  document.body
+  , element :  body
 }
 
 var defaultWritableState = {
     label      :  'Writable State'
   , properties :  undefined
-  , element    :  document.body
+  , element    :  body
 }
 
 var defaultReadableState = {
     label      :  'Readable State'
   , properties :  undefined
-  , element    :  document.body
+  , element    :  body
 }
 
 var proto = StreamViz.prototype;
