@@ -1,6 +1,6 @@
 'use strict';
 
-var numbers  =  require('stream-spectrum/readable/numbers')
+var numbers  =  require('stream-spectrum/readable/number')
   , sviz     =  require('../../')
   , el       =  document.getElementById('numbers')
 
