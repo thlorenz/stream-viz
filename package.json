@@ -1,6 +1,6 @@
 {
   "name": "stream-viz",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Visualizes a stream in the browser.",
   "main": "stream-viz.js",
   "scripts": {
@@ -33,7 +33,16 @@
     "through2": "~0.2.3",
     "stream-spectrum": "~0.1.1"
   },
-  "keywords": [ "streams", "stream", "visualize", "visualization", "buffer", "backpressure", "learn", "tutorial" ],
+  "keywords": [
+    "streams",
+    "stream",
+    "visualize",
+    "visualization",
+    "buffer",
+    "backpressure",
+    "learn",
+    "tutorial"
+  ],
   "author": {
     "name": "Thorsten Lorenz",
     "email": "thlorenz@gmx.de",
