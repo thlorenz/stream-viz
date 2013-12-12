@@ -33,7 +33,7 @@
     "through2": "~0.2.3",
     "stream-spectrum": "~0.1.1"
   },
-  "keywords": [],
+  "keywords": [ "streams", "stream", "visualize", "visualization", "buffer", "backpressure", "learn", "tutorial" ],
   "author": {
     "name": "Thorsten Lorenz",
     "email": "thlorenz@gmx.de",
